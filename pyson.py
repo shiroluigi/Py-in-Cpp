@@ -1,4 +1,4 @@
 
 
-def getInteger1(a):
+def getInt(a):
     return a    
