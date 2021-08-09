@@ -1,14 +1,13 @@
-#include "PythonH.h"
+#include "embed.h"
 
 
 int main()
 {
-        ppython pInstance;
-        opython p = PyUnicode_FromString("This is a string");
-        //long cl = callSpecificFunctionLong("getInteger1", "ttyon", NULL);
+        pysonI pInstance;
+        pysonO p = PyUnicode_FromString("This is a string");
 
-        const char* ci = callSpecificFunctionChar("getInteger1", "ttyon", p);
-        std::cout << ci << std::endl;
+        const char* s = stringEX("getInteger1", "pyson", p);
+        std::cout << s << std::endl;
 
     return 0;
 }
