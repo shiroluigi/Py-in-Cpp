@@ -4,27 +4,27 @@
 #include "Python.h"
 #include <iostream>
 
-class ppython {
+class pysonI {
 public:
-    ppython() {
+    pysonI() {
         Py_Initialize();
-        std::cout << "Python interpreter initialized" << std::endl;
+        std::cout << "Python embedder initialized" << std::endl;
     }
-    ~ppython() {
+    ~pysonI() {
         if (Py_FinalizeEx() < 0) {
             exit(120);
         }
         else
-        std::cout << "Python interpreter de-initialized" << std::endl;
+        std::cout << "Python embedder de-initialized" << std::endl;
 
     }
 };
-class opython {
+class pysonO {
     PyObject* ob;
 public:
-    opython() : ob(NULL) {}
-    opython(PyObject* _ob) : ob(_ob) {}
-    ~opython() {
+    pysonO() : ob(NULL) {}
+    pysonO(PyObject* _ob) : ob(_ob) {}
+    ~pysonO() {
         if (ob) {
             Py_DECREF(ob);
         }
@@ -69,7 +69,7 @@ void RunPythonScript(const char* Location,const char* fileName) {
     }
 }
 
-long callSpecificFunctionLong(const char* funcName, const char* fileNameWithoutPy,opython param) {
+long NUMERATOREX(const char* funcName, const char* fileNameWithoutPy,opython param) {
 
     opython pName = PyUnicode_FromString(fileNameWithoutPy);
     opython pModule = PyImport_Import(pName);
@@ -98,14 +98,12 @@ long callSpecificFunctionLong(const char* funcName, const char* fileNameWithoutP
     
 }
 
- const char* callSpecificFunctionChar(const char* funcName, const char* fileNameWithoutPy, opython param) {
+ const char* stringEX(const char* funcName, const char* fileNameWithoutPy, opython param) {
 
-    opython pName = PyUnicode_DecodeFSDefault(fileNameWithoutPy);
-    opython pModule = PyImport_Import(pName);
-    opython pArgs = PyTuple_New(1);
+    pysonO pName = PyUnicode_DecodeFSDefault(fileNameWithoutPy);
+    pysonO pModule = PyImport_Import(pName);
+    pysonO pArgs = PyTuple_New(1);
 
-    //checking if the parameters are NULL (0)
-    //if not then setting up a Tuple to store thhe valus
     if (param == NULL)
         pArgs = NULL;
     else
@@ -115,13 +113,11 @@ long callSpecificFunctionLong(const char* funcName, const char* fileNameWithoutP
 
 
     if (pModule) {
-        opython fFunc = PyObject_GetAttrString(pModule, funcName);
+        pysonO fFunc = PyObject_GetAttrString(pModule, funcName);
         if (fFunc && PyCallable_Check(fFunc))
         {
-             opython pValue = PyObject_CallObject(fFunc, pArgs);
+             pysonO pValue = PyObject_CallObject(fFunc, pArgs);
 
-             //dont start this faking debug sentance without knowing tje working!
-             //std::cout << PyUnicode_AsUTF8(param) << std::endl;
 
              return PyUnicode_AsUTF8(pValue);
             
